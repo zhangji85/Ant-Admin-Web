@@ -1,11 +1,13 @@
 <template>
   <div class="header-right">
     <a-dropdown v-model="visible">
-      <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-        <a-avatar style="backgroundColor:#87d068" icon="user" size="small" />
-        <span>Admin</span>
-        <a-icon type="down" />
-      </a>
+      <div class="user-info">
+        <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+          <a-avatar style="backgroundColor:#87d068" icon="user" size="small" />
+          <span style="padding-left: 5px">Admin</span>
+          <a-icon type="down" />
+        </a>
+      </div>
       <a-menu slot="overlay" @click="handleMenuClick">
         <a-menu-item key="0">
           <a-icon type="user" />
@@ -50,5 +52,12 @@ export default {
   right: 0;
   top: 0;
   padding-right: 30px;
+}
+.user-info {
+  padding: 0 16px;
+  font-size: 14px;
+}
+.user-info:hover {
+  background-color: rgba(0, 0, 0, 0.025);
 }
 </style>

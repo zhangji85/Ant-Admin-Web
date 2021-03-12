@@ -1,23 +1,25 @@
 <template>
   <div class="meuns-div">
     <a-menu
-      :default-selected-keys="['1']"
-      :default-open-keys="['2']"
+      :openKeys="openKeys"
+      :selectedKeys="selectedKeys"
       mode="inline"
       theme="dark"
       :inline-collapsed="collapsed"
       class="amenu"
+      @openChange="onOpenChange"
+      @select="select"
     >
       <template v-for="item in list">
-        <a-menu-item v-if="!item.children" :key="item.menu_id">
+        <a-menu-item v-if="!item.children" :key="item.id">
           <a-icon
-            :type="item.menu_icon"
-            :theme="item.icon_theme ? item.icon_theme : 'filled'"
-            v-if="item.menu_icon"
+            :type="item.icon"
+            :theme="item.icon_theme ? item.icon_theme : 'outlined'"
+            v-if="item.icon"
           />
-          <span>{{ item.menu_name }}</span>
+          <span>{{ item.title }}</span>
         </a-menu-item>
-        <sub-menu v-else :key="item.menu_id" :menu-info="item" />
+        <sub-menu v-else :key="item.id" :menu-info="item" />
       </template>
     </a-menu>
   </div>
@@ -27,16 +29,17 @@
 import { Menu } from "ant-design-vue";
 const SubMenu = {
   template: `
-      <a-sub-menu :key="menuInfo.menu_id" v-bind="$props" v-on="$listeners">
+      <a-sub-menu :key="menuInfo.id" v-bind="$props" v-on="$listeners">
         <span slot="title">
-          <a-icon :type="menuInfo.menu_icon" :theme="menuInfo.icon_theme?menuInfo.icon_theme : 'filled'" v-if="menuInfo.menu_icon" /><span>{{ menuInfo.menu_name }}</span>
+          <a-icon :type="menuInfo.icon" :theme="menuInfo.icon_theme?menuInfo.icon_theme : 'outlined'" v-if="menuInfo.icon" />
+          <span>{{ menuInfo.title }}</span>
         </span>
         <template v-for="item in menuInfo.children">
-          <a-menu-item v-if="!item.children" :key="item.menu_id">
-            <a-icon :type="item.menu_icon" :theme="item.icon_theme?item.icon_theme: 'filled'" v-if="item.menu_icon" />
-            <span>{{ item.menu_name }}</span>
+          <a-menu-item v-if="!item.children" :key="item.id">
+            <a-icon :type="item.icon" :theme="item.icon_theme?item.icon_theme: 'outlined'" v-if="item.icon" />
+            <span>{{ item.title }}</span>
           </a-menu-item>
-          <sub-menu v-else :key="item.menu_id" :menu-info="item" />
+          <sub-menu v-else :key="item.id" :menu-info="item" />
         </template>
       </a-sub-menu>
     `,
@@ -59,148 +62,262 @@ export default {
   props: ["collapsed"],
   data() {
     return {
+      nodePathArray: [],
+      openKeys: [],
+      menuItem: null,
       list: [
         {
-          menu_id: "222",
-          menu_name: "系统管理",
-          menu_appid: null,
-          menu_type: "CONTENTS",
-          menu_path: "CONTENTS",
-          menu_icon: "setting",
+          id: "1",
+          title: "鉴权页",
+          appid: "",
+          target: "", // _blank 新页面， _self 当前页， _top 当前页上层
+          type: "CONTENTS",
+          path: "CONTENTS",
+          icon: "safety-certificate",
           icon_theme: "filled",
-          above_menu_id: "root",
+          above_id: "root",
           children: [
             {
-              menu_id: "242",
-              menu_name: "菜单配置",
-              menu_appid: null,
-              menu_type: "diy",
-              menu_path: "menucfg2",
-              menu_icon: "",
+              id: "1-1",
+              title: "登录页",
+              appid: "",
+              target: "_top",
+              type: "PAGE",
+              path: "login",
+              icon: "login",
               icon_theme: "",
-              above_menu_id: "222"
+              above_id: "1"
             },
             {
-              menu_id: "234",
-              menu_name: "用户管理",
-              menu_appid: 10242,
-              menu_type: "diy",
-              menu_path: "displaypage",
-              menu_icon: "",
+              id: "1-2",
+              title: "登录页2",
+              appid: "",
+              target: "_blank",
+              type: "PAGE",
+              path: "login2",
+              icon: "login",
               icon_theme: "",
-              above_menu_id: "222"
+              above_id: "1"
             },
             {
-              menu_id: "225",
-              menu_name: "角色管理",
-              menu_appid: 10243,
-              menu_type: "diy",
-              menu_path: "displaypage",
-              menu_icon: "",
+              id: "1-3",
+              title: "注册页",
+              appid: "",
+              target: "_top",
+              type: "PAGE",
+              path: "register",
+              icon: "user-add",
               icon_theme: "",
-              above_menu_id: "222"
-            },
-            {
-              menu_id: "262",
-              menu_name: "机构管理",
-              menu_appid: null,
-              menu_type: "diy",
-              menu_path: "orgcfg",
-              menu_icon: "",
-              icon_theme: "",
-              above_menu_id: "222"
-            },
-            {
-              menu_id: "247",
-              menu_name: "数据字典配置",
-              menu_appid: 10244,
-              menu_type: "diy",
-              menu_path: "displaypage",
-              menu_icon: "",
-              icon_theme: "",
-              above_menu_id: "222"
-            },
-            {
-              menu_id: "223",
-              menu_name: "交易日志",
-              menu_appid: 10245,
-              menu_type: "displaypage",
-              menu_path: "displaypage",
-              menu_icon: "",
-              icon_theme: "",
-              above_menu_id: "222"
-            },
-            {
-              menu_id: "282",
-              menu_name: "序列工厂",
-              menu_appid: 10246,
-              menu_type: "displaypage",
-              menu_path: "displaypage",
-              menu_icon: "",
-              icon_theme: "",
-              above_menu_id: "222"
+              above_id: "1"
             }
           ]
         },
         {
-          menu_id: "380",
-          menu_name: "监控管理",
-          menu_appid: null,
-          menu_type: "CONTENTS",
-          menu_path: "CONTENTS",
-          menu_icon: "video-camera",
+          id: "2",
+          title: "用户中心",
+          appid: "",
+          target: "",
+          type: "CONTENTS",
+          path: "CONTENTS",
+          icon: "aliwangwang",
           icon_theme: "filled",
-          above_menu_id: "root",
+          above_id: "root",
           children: [
             {
-              menu_id: "381",
-              menu_name: "监控列表",
-              menu_appid: null,
-              menu_type: "diy",
-              menu_path: "",
-              menu_icon: "",
+              id: "2-1",
+              title: "个人信息",
+              appid: "",
+              target: "",
+              type: "PAGE",
+              path: "user",
+              icon: "user",
               icon_theme: "",
-              above_menu_id: "380"
-            },
-            {
-              menu_id: "382",
-              menu_name: "分屏查看",
-              menu_appid: null,
-              menu_type: "diy",
-              menu_path: "",
-              menu_icon: "",
-              icon_theme: "",
-              above_menu_id: "380"
+              above_id: "2"
             }
           ]
         },
         {
-          menu_id: "383",
-          menu_name: "告警管理",
-          menu_appid: null,
-          menu_type: "diy",
-          menu_path: "",
-          menu_icon: "alert",
+          id: "3",
+          title: "系统管理",
+          appid: "",
+          target: "",
+          type: "CONTENTS",
+          path: "CONTENTS",
+          icon: "setting",
           icon_theme: "filled",
-          above_menu_id: "root"
-        },
-        {
-          menu_id: "385",
-          menu_name: "一键报警",
-          menu_appid: null,
-          menu_type: "diy",
-          menu_path: "",
-          menu_icon: "phone",
-          icon_theme: "filled",
-          above_menu_id: "root"
+          above_id: "root",
+          children: [
+            {
+              id: "3-1",
+              title: "用户管理",
+              appid: "",
+              target: "",
+              type: "PAGE",
+              path: "",
+              icon: "usergroup-add",
+              icon_theme: "",
+              above_id: "3"
+            },
+            {
+              id: "3-2",
+              title: "角色管理",
+              appid: "",
+              target: "",
+              type: "PAGE",
+              path: "",
+              icon: "solution",
+              icon_theme: "",
+              above_id: "3"
+            },
+            {
+              id: "3-3",
+              title: "权限管理",
+              appid: "",
+              target: "",
+              type: "PAGE",
+              path: "",
+              icon: "safety",
+              icon_theme: "",
+              above_id: "3"
+            }
+          ]
         }
       ]
     };
   },
+  mounted() {
+    this.getPathByKey(this.vuex_active_tabKey, "id", this.list);
+    this.initRouter();
+  },
+  computed: {
+    rootSubmenuKeys() {
+      let list = [];
+      for (let i = 0; i < this.list.length; i++) {
+        list.push(this.list[i]["id"]);
+      }
+      return list;
+    },
+    selectedKeys() {
+      let id = this.vuex_active_tabKey;
+      if (id) {
+        return [id];
+      }
+      return [];
+    }
+  },
   methods: {
-    // toggleCollapsed() {
-    //   this.collapsed = !this.collapsed;
-    // }
+    // 菜单点击
+    select({ item, key, selectedKeys }) {
+      this.getPathByKey(key, "id", this.list).then(val => {
+        this.route_to(
+          this.menuItem["id"],
+          this.menuItem["target"],
+          this.menuItem["path"],
+          this.menuItem
+        );
+      });
+    },
+    // 路由跳转
+    route_to(id, target, path, item) {
+      if (target == "_blank") {
+        // 打开新标签页
+        let routeUrl = this.$router.resolve({
+          path: "/" + path
+        });
+        window.open(routeUrl.href, "_blank");
+      } else if (target == "_top") {
+        // 当前标签新页面
+        this.$router.push({
+          path: "/" + path
+        });
+      } else {
+        // 当前页面新Tab
+        this.$router.push({
+          path: "/" + path,
+          query: { id: id }
+        });
+        this.addTab({
+          id: item.id,
+          title: item.title,
+          path: item.path,
+          icon: item.icon,
+          icon_theme: item.icon_theme
+        });
+      }
+    },
+    addTab(tab) {
+      let tabArrStr = JSON.stringify(this.vuex_tabsArr);
+      if (tabArrStr.indexOf(JSON.stringify(tab)) !== -1) {
+        this.$mc.vuex("vuex_active_tabKey", tab.id);
+        return;
+      }
+      let tabsArr = JSON.parse(tabArrStr);
+      tabsArr.push(tab);
+      this.$mc.vuex("vuex_tabsArr", tabsArr);
+      this.$mc.vuex("vuex_active_tabKey", tab.id);
+    },
+    onOpenChange(openKeys) {
+      const latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      );
+      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+        this.openKeys = openKeys;
+      } else {
+        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      }
+    },
+    initRouter() {
+      this.vuex_tabsArr.forEach((tab, i) => {
+        if (tab.id === this.vuex_active_tabKey) {
+          // 当前页面新Tab
+          this.$router.push({
+            path: "/" + tab.path,
+            query: { id: tab.id }
+          });
+        }
+      });
+    },
+    /*arr为树形结构数组，value为要查询的树节点的标识值，key则为标识
+     我是用的是id,则key是"id"*/
+    // 获取指定节点的路径数组
+    getPathByKey(value, key, arr) {
+      // 用于存储节点唯一标识值路径数组
+      this.nodePathArray = [];
+      try {
+        for (let i = 0; i < arr.length; i++) {
+          this.getNodePath(arr[i], key, value);
+        }
+      } catch (e) {
+        this.openKeys = this.nodePathArray.slice(0, -1);
+        // return this.nodePathArray;
+        return Promise.resolve(/* 这里是需要返回的数据*/);
+      }
+    },
+    getNodePath(node, key, value) {
+      // 这里可以自定义push的内容，而不是整个node,而且这里node也包含了children
+      this.nodePathArray.push(node[key]);
+      // 找到符合条件的节点，通过throw终止掉递归
+      if (node[key] === value) {
+        // 也可以直接使用return;结束循环
+        this.menuItem = node;
+        throw "over!";
+      }
+      if (node.children && node.children.length > 0) {
+        for (var i = 0; i < node.children.length; i++) {
+          this.getNodePath(node.children[i], key, value);
+        }
+        // 当前节点的子节点遍历完依旧没找到，则删除路径中的该节点
+        this.nodePathArray.pop();
+      } else {
+        // 找到叶子节点时，删除路径当中的该叶子节点
+        this.nodePathArray.pop();
+      }
+    }
+  },
+  watch: {
+    $route(to, from) {
+      this.getPathByKey(this.$route.query["id"], "id", this.list);
+    }
   }
 };
 </script>

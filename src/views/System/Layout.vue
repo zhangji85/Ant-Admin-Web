@@ -35,7 +35,12 @@
           width: 'calc(100% - ' + leftWith + ')'
         }"
       >
-        <div class="views-content"></div>
+        <router-view
+          v-if="vuex_pageReload"
+          id="router-view"
+          :style="{ padding: '24px', minHeight: '360px' }"
+        />
+        <!-- <div class="views-content"></div> -->
       </a-layout-content>
       <a-layout-footer
         :style="{
@@ -97,13 +102,21 @@ export default {
   color: #1890ff;
 }
 
+#router-view {
+  position: relative;
+  /* transform: translate3d(0,0,0); */
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+
 .logo {
   height: 32px;
   margin: 16px;
   line-height: 36px;
   font-size: 18px;
   color: #fff;
-  padding-left: 10px;
+  padding-left: 6px;
 }
 .logo img {
   width: 36px;

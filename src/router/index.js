@@ -2,6 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err);
+};
+
 Vue.use(Router)
 
 export default new Router({
@@ -9,7 +14,14 @@ export default new Router({
     {
       path: '/',
       name: 'layout',
-      component: resolve => require(["@/views/System/Layout.vue"], resolve)
+      component: resolve => require(["@/views/System/Layout.vue"], resolve),
+      children:[
+        {
+          path: '/user',
+          name: 'user',
+          component: resolve => require(["@/views/User/user.vue"], resolve)
+        },
+      ]
     },
     {
       path: '/login',
