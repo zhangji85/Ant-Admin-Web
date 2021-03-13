@@ -1,2 +1,0 @@
-webpackJsonp([2],{BKky:function(e,t){},Ps19:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var s={render:function(){var e=this.$createElement;return(this._self._c||e)("div",{staticClass:"user"},[this._v("\n  个人信息1\n")])},staticRenderFns:[]};var r=n("VU/8")({name:"User",data:function(){return{}},mounted:function(){},methods:{}},s,!1,function(e){n("BKky")},"data-v-7d1dc4ae",null);t.default=r.exports}});
-//# sourceMappingURL=2.4ecd36426b92a0aa8b3e.js.map
