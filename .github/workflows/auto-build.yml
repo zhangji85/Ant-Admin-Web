@@ -33,3 +33,16 @@ jobs:
           
     - name: 'save comm.txt'
       run: /usr/bin/git log -1 --oneline >> comm.txt
+      
+    - name: 'Send mail'
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.163.com
+        server_port: 465
+        username: ${{ secrets.MAILUSERNAME }}
+        password: ${{ secrets.MAILPASSWORD }}
+        subject: Ant-Admin 已部署完成
+        body: file://comm.txt
+        to: 1808240436@qq.com
+        from: Ant Admin
+        content_type: text/html
