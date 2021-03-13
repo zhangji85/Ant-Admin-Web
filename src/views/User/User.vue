@@ -1,6 +1,6 @@
 <template>
   <div class="user">
-    个人信息1
+    个人信息
   </div>
 </template>
 
