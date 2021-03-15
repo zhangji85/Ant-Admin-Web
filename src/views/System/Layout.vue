@@ -49,7 +49,7 @@
           width: 'calc(100% - ' + leftWith + ')'
         }"
       >
-        Ant Design ©2021 Created by Ant UED
+        Ant Admin © 2021 Created by Zhangji
       </a-layout-footer>
     </a-layout>
     <a-back-top>

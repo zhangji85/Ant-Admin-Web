@@ -150,7 +150,7 @@ const menuList = [
       children: [
         {
           id: "2-1",
-          title: "个人信息",
+          title: "个人设置",
           appid: "",
           target: "",
           type: "PAGE",
