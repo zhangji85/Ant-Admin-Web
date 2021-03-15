@@ -29,9 +29,9 @@ export default {
 </script>
 <style scoped>
 .auth-base {
-  position: absolute;
+  position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   font-size: 16px;
   background-image: url("../../assets/img/background.svg");
 }
@@ -39,7 +39,7 @@ export default {
   position: relative;
   width: 100%;
   min-height: 100%;
-  padding: 160px 0 144px;
+  padding: 110px 0 144px;
 }
 .logo {
   height: 44px;
@@ -59,9 +59,11 @@ export default {
   margin: 0 auto;
 }
 .copyright {
-  width: 100%;
   position: absolute;
-  bottom: 24px;
+  bottom: 0;
+  width: 100%;
+  margin: 48px 0 24px;
+  padding: 0 16px;
   text-align: center;
   color: rgba(0, 0, 0, 0.45);
   font-size: 14px;
