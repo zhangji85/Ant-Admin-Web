@@ -7,11 +7,27 @@ import store from '@/store';
 import App from './App'
 import 'ant-design-vue/dist/antd.css';
 import router from './router'
+import NProgress from 'nprogress' // 进度条
+import 'nprogress/nprogress.css' //样式必须引入
 
 
 Vue.config.productionTip = false
 
 Vue.use(Antd);
+
+// 简单配置
+NProgress.inc(0.2)
+NProgress.configure({ easing: 'ease', speed: 500, showSpinner: false })
+ 
+ 
+router.beforeEach((to,from,next) => {
+  NProgress.start()
+  next()
+})
+ 
+router.afterEach(() => {
+  NProgress.done()
+})
 
 const $mc = {}
 Vue.prototype.$mc = $mc
