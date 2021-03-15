@@ -27,6 +27,7 @@
 
 <script>
 import { Menu } from "ant-design-vue";
+import menuList from "./menuList.js";
 const SubMenu = {
   template: `
       <a-sub-menu :key="menuInfo.id" v-bind="$props" v-on="$listeners">
@@ -65,124 +66,7 @@ export default {
       nodePathArray: [],
       openKeys: [],
       menuItem: null,
-      list: [
-        {
-          id: "1",
-          title: "鉴权页",
-          appid: "",
-          target: "", // _blank 新页面， _self 当前页， _top 当前页上层
-          type: "CONTENTS",
-          path: "CONTENTS",
-          icon: "safety-certificate",
-          icon_theme: "filled",
-          above_id: "root",
-          children: [
-            {
-              id: "1-1",
-              title: "登录页",
-              appid: "",
-              target: "_top",
-              type: "PAGE",
-              path: "login",
-              icon: "login",
-              icon_theme: "",
-              above_id: "1"
-            },
-            {
-              id: "1-2",
-              title: "登录页2",
-              appid: "",
-              target: "_blank",
-              type: "PAGE",
-              path: "login2",
-              icon: "login",
-              icon_theme: "",
-              above_id: "1"
-            },
-            {
-              id: "1-3",
-              title: "注册页",
-              appid: "",
-              target: "_top",
-              type: "PAGE",
-              path: "register",
-              icon: "user-add",
-              icon_theme: "",
-              above_id: "1"
-            }
-          ]
-        },
-        {
-          id: "2",
-          title: "用户中心",
-          appid: "",
-          target: "",
-          type: "CONTENTS",
-          path: "CONTENTS",
-          icon: "aliwangwang",
-          icon_theme: "filled",
-          above_id: "root",
-          children: [
-            {
-              id: "2-1",
-              title: "个人信息",
-              appid: "",
-              target: "",
-              type: "PAGE",
-              path: "user",
-              icon: "user",
-              icon_theme: "",
-              above_id: "2"
-            }
-          ]
-        },
-        {
-          id: "3",
-          title: "系统管理",
-          appid: "",
-          target: "",
-          type: "CONTENTS",
-          path: "CONTENTS",
-          icon: "setting",
-          icon_theme: "filled",
-          above_id: "root",
-          children: [
-            {
-              id: "3-1",
-              title: "用户管理",
-              appid: "",
-              target: "",
-              type: "PAGE",
-              path: "",
-              icon: "usergroup-add",
-              icon_theme: "",
-              above_id: "3"
-            },
-            {
-              id: "3-2",
-              title: "角色管理",
-              appid: "",
-              target: "",
-              type: "PAGE",
-              path: "",
-              icon: "solution",
-              icon_theme: "",
-              above_id: "3"
-            },
-            {
-              id: "3-3",
-              title: "权限管理",
-              appid: "",
-              target: "",
-              type: "PAGE",
-              path: "",
-              icon: "safety",
-              icon_theme: "",
-              above_id: "3"
-            }
-          ]
-        }
-      ]
+      list: menuList
     };
   },
   mounted() {

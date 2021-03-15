@@ -22,6 +22,21 @@ export default new Router({
           name: 'user',
           component: resolve => require(["@/views/User/User.vue"], resolve)
         },
+        {
+          path: '/403',
+          name: '403',
+          component: resolve => require(["@/views/Default/403.vue"], resolve)
+        },
+        {
+          path: '/404',
+          name: '404',
+          component: resolve => require(["@/views/Default/404.vue"], resolve)
+        },
+        {
+          path: '/500',
+          name: '500',
+          component: resolve => require(["@/views/Default/500.vue"], resolve)
+        },
       ]
     },
     {
