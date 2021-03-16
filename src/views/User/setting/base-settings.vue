@@ -118,4 +118,7 @@ export default {
 .avatar {
   margin-bottom: 20px;
 }
+.avatar-box {
+  width: 50%;
+}
 </style>
