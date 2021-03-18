@@ -37,6 +37,21 @@ export default new Router({
           name: '500',
           component: resolve => require(["@/views/Default/500.vue"], resolve)
         },
+        {
+          path: '/crudform',
+          name: 'crudform',
+          component: resolve => require(["@/views/Crud/CrudForm.vue"], resolve)
+        },
+        {
+          path: '/crudtable',
+          name: 'crudtable',
+          component: resolve => require(["@/views/Crud/CrudTable.vue"], resolve)
+        },
+        {
+          path: '/test',
+          name: 'test',
+          component: resolve => require(["@/views/test.vue"], resolve)
+        },
       ]
     },
     {

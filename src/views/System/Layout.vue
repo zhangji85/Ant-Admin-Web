@@ -35,12 +35,9 @@
           width: 'calc(100% - ' + leftWith + ')'
         }"
       >
-        <router-view
-          v-if="vuex_pageReload"
-          id="router-view"
-          :style="{ padding: '24px', minHeight: '360px' }"
-        />
-        <!-- <div class="views-content"></div> -->
+        <div class="views-content">
+          <router-view v-if="vuex_pageReload" id="router-view" />
+        </div>
       </a-layout-content>
       <a-layout-footer
         :style="{
@@ -152,10 +149,8 @@ export default {
 }
 
 .views-content {
-  margin: 14px 14px;
-  padding: 20px;
-  background: #fff;
-  height: 2000px;
+  padding: 24px;
+  min-height: 360px;
 }
 .ant-back-top-inner {
   height: 40px;

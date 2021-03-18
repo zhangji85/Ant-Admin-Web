@@ -161,7 +161,52 @@ const menuList = [
         }
       ]
     },
-    
+    {
+      id: "5",
+      title: "配置化表格表单",
+      appid: "",
+      target: "",
+      type: "CONTENTS",
+      path: "CONTENTS",
+      icon: "golden",
+      icon_theme: "filled",
+      above_id: "root",
+      children: [
+        {
+          id: "5-1",
+          title: "配置化表格",
+          appid: "",
+          target: "",
+          type: "PAGE",
+          path: "crudtable",
+          icon: "schedule",
+          icon_theme: "",
+          above_id: "5"
+        },
+        {
+          id: "5-2",
+          title: "配置化表单",
+          appid: "",
+          target: "",
+          type: "PAGE",
+          path: "crudform",
+          icon: "profile",
+          icon_theme: "",
+          above_id: "5"
+        }
+      ]
+    },
+    {
+      id: "6",
+      title: "test",
+      appid: "",
+      target: "",
+      type: "PAGE",
+      path: "test",
+      icon: "fire",
+      icon_theme: "filled",
+      above_id: "root",
+    },   
 ]
 
 export default menuList
