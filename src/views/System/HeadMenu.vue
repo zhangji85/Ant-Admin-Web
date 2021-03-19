@@ -52,7 +52,7 @@ export default {
       }
     },
     toGithub() {
-      window.open("https://github.com/zhangji85/Ant-Admin", "_blank");
+      window.open("https://github.com/zhangji85/Ant-Admin-Web", "_blank");
     }
   }
 };

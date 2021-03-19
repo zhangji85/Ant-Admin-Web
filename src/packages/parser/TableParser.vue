@@ -118,6 +118,7 @@
           <!-- 表格 -->
           <a-table
             ref="table"
+            :locale="locale"
             :rowSelection="rowSelection"
             :size="tableSize"
             :columns="tableHead"
@@ -146,6 +147,8 @@
                         <a-popconfirm
                           v-if="tableData.length"
                           title="确定删除？"
+                          ok-text="确定"
+                          cancel-text="取消"
                           @confirm="() => handleDel(text, record)"
                         >
                           <span style="color:#f00">删除</span>
@@ -215,6 +218,11 @@ export default {
   },
   data() {
     return {
+      locale: {
+        filterConfirm: "确定",
+        filterReset: "重置",
+        emptyText: "暂无数据"
+      },
       checkedList: [],
       indeterminate: false,
       checkAll: true,
