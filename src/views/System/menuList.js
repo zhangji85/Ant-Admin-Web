@@ -44,7 +44,31 @@ const menuList = [
         above_id: "3"
       }
     ]
-  },  
+  },
+  {
+    id: "2",
+    title: "用户中心",
+    appid: "",
+    target: "",
+    type: "CONTENTS",
+    path: "CONTENTS",
+    icon: "aliwangwang",
+    icon_theme: "filled",
+    above_id: "root",
+    children: [
+      {
+        id: "2-1",
+        title: "个人设置",
+        appid: "",
+        target: "",
+        type: "PAGE",
+        path: "user",
+        icon: "user",
+        icon_theme: "",
+        above_id: "2"
+      }
+    ]
+  },
   {
     id: "4",
     title: "缺省页",
@@ -136,32 +160,8 @@ const menuList = [
           above_id: "1"
         }
       ]
-    },
-    {
-      id: "2",
-      title: "用户中心",
-      appid: "",
-      target: "",
-      type: "CONTENTS",
-      path: "CONTENTS",
-      icon: "aliwangwang",
-      icon_theme: "filled",
-      above_id: "root",
-      children: [
-        {
-          id: "2-1",
-          title: "个人设置",
-          appid: "",
-          target: "",
-          type: "PAGE",
-          path: "user",
-          icon: "user",
-          icon_theme: "",
-          above_id: "2"
-        }
-      ]
-    },
-    {
+  },
+  {
       id: "5",
       title: "配置化表格表单",
       appid: "",
@@ -195,8 +195,43 @@ const menuList = [
           above_id: "5"
         }
       ]
-    },
-    {
+  },
+  {
+      id: "7",
+      title: "编辑器",
+      appid: "",
+      target: "",
+      type: "CONTENTS",
+      path: "CONTENTS",
+      icon: "edit",
+      icon_theme: "filled",
+      above_id: "root",
+      children: [
+        {
+          id: "7-1",
+          title: "富文本编辑器",
+          appid: "",
+          target: "",
+          type: "PAGE",
+          path: "quillview",
+          icon: "",
+          icon_theme: "",
+          above_id: "7"
+        },
+        {
+          id: "7-2",
+          title: "Markdown编辑器",
+          appid: "",
+          target: "",
+          type: "PAGE",
+          path: "mavonview",
+          icon: "",
+          icon_theme: "",
+          above_id: "7"
+        }
+      ]
+  },
+  {
       id: "6",
       title: "test",
       appid: "",
@@ -206,7 +241,7 @@ const menuList = [
       icon: "fire",
       icon_theme: "filled",
       above_id: "root",
-    },   
+  },   
 ]
 
 export default menuList

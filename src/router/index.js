@@ -48,6 +48,16 @@ export default new Router({
           component: resolve => require(["@/views/Crud/CrudTable.vue"], resolve)
         },
         {
+          path: '/quillview',
+          name: 'quillview',
+          component: resolve => require(["@/views/Editors/QuillView.vue"], resolve)
+        },
+        {
+          path: '/mavonview',
+          name: 'mavonview',
+          component: resolve => require(["@/views/Editors/MavonView.vue"], resolve)
+        },
+        {
           path: '/test',
           name: 'test',
           component: resolve => require(["@/views/test.vue"], resolve)
