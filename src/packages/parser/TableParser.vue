@@ -1,7 +1,7 @@
 <template>
   <div class="table-parser">
     <a-spin :spinning="loading">
-      <template v-if="tableData.length">
+      <template v-if="sourceData.length">
         <div ref="tableBox">
           <!-- 表格设置 -->
           <div class="toolbar">
