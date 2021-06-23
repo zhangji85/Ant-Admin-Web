@@ -1,16 +1,16 @@
 <template>
-  <default-page type="500" />
+  <a-result status="500" title="500" sub-title="Sorry, the server is wrong.">
+    <template #extra>
+      <a-button type="primary">
+        Back Home
+      </a-button>
+    </template>
+  </a-result>
 </template>
-
 <script>
-import DefaultPage from "@/views/Default/DefaultPage";
-
 export default {
-  name: "e500",
-  components: {
-    DefaultPage
+  data() {
+    return {};
   }
 };
 </script>
-
-<style scoped></style>

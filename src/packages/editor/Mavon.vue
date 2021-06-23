@@ -3,7 +3,7 @@
     <mavonEditor
       :value="content"
       @change="onEditorChange"
-      style="height: 800px"
+      style="height: calc(100vh - 238px)"
     />
   </div>
 </template>

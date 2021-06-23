@@ -1,16 +1,20 @@
 <template>
-  <default-page type="403" />
+  <a-result
+    status="403"
+    title="403"
+    sub-title="Sorry, you are not authorized to access this page."
+  >
+    <template #extra>
+      <a-button type="primary">
+        Back Home
+      </a-button>
+    </template>
+  </a-result>
 </template>
-
 <script>
-import DefaultPage from "@/views/Default/DefaultPage";
-
 export default {
-  name: "e403",
-  components: {
-    DefaultPage
+  data() {
+    return {};
   }
 };
 </script>
-
-<style scoped></style>

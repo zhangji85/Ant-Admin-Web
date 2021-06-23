@@ -49,7 +49,7 @@ export default {
 <style scoped>
 .quill-editor {
   position: relative;
-  height: 800px;
+  height: calc(100vh - 286px);
 }
 .quill-editor /deep/ .ql-container {
   height: calc(100% - 42px) !important;
