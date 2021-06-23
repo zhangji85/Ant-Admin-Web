@@ -1,0 +1,2 @@
+webpackJsonp([10],{oYdJ:function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n={render:function(){var t=this,e=t.$createElement,r=t._self._c||e;return r("a-result",{attrs:{status:"500",title:"500","sub-title":"Sorry, the server is wrong."},scopedSlots:t._u([{key:"extra",fn:function(){return[r("a-button",{attrs:{type:"primary"}},[t._v("\n      Back Home\n    ")])]},proxy:!0}])})},staticRenderFns:[]},s=r("VU/8")({data:function(){return{}}},n,!1,null,null,null);e.default=s.exports}});
+//# sourceMappingURL=10.43b419e8843562f02e90.js.map
