@@ -93,7 +93,7 @@
                   >
                     <template slot="content">
                       <a-checkbox-group
-                        :default-value="defaultValue"
+                        :defaultVaule="defaultValue"
                         v-model="checkedList"
                         @change="onChange"
                       >
@@ -268,6 +268,7 @@ export default {
         emptyText: "暂无数据"
       },
       checkedList: [],
+      initChecked: false,
       indeterminate: false,
       checkAll: true,
       tableSize: this.size,
@@ -355,7 +356,10 @@ export default {
       this.columns.forEach((col, i) => {
         defaultValue.push(col["key"]);
       });
-      this.checkedList = defaultValue;
+      if (!this.initChecked) {
+        this.checkedList = defaultValue;
+        this.initChecked = true;
+      }
       return defaultValue;
     },
     tableHead() {
@@ -427,6 +431,11 @@ export default {
           }
         });
       }
+    }
+  },
+  watch: {
+    columns: {
+      handler(val) {}
     }
   }
 };
