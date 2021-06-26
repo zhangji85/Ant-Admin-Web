@@ -9,12 +9,23 @@
         showIcon
       />
       <br />
+      <v-select-form-parser
+        v-if="selcolumns.length"
+        :sourceData="selcolumns"
+        :span="6"
+      ></v-select-form-parser>
       <v-table-parser
         :sourceData="columns"
         :tableData="data"
         :loading="loading"
+        title="配置化表格"
         @handle-edit="handleEdit"
       >
+        <template slot="toolbtns">
+          <a-button type="primary" icon="plus" @click="handleEdit({}, {})">
+            新建
+          </a-button>
+        </template>
         <template v-slot:name="{ row }">
           <a-avatar
             src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -61,6 +72,7 @@ const columns = [
     tooltip: true,
     fixed: "left",
     sortable: true,
+    search: true,
     formOptions: {
       el: "input"
     },
@@ -90,6 +102,7 @@ const columns = [
     title: "复选框",
     dataIndex: "checkbox",
     width: 150,
+    search: true,
     formOptions: {
       el: "checkbox",
       options: [
@@ -116,6 +129,7 @@ const columns = [
     title: "星级",
     dataIndex: "rate",
     width: 200,
+    search: true,
     formOptions: {
       el: "rate"
     }
@@ -127,6 +141,7 @@ const columns = [
     dataIndex: "select",
     width: 100,
     tooltip: true,
+    search: true,
     formOptions: {
       el: "select",
       options: [
@@ -160,6 +175,7 @@ const columns = [
     dataIndex: "address",
     tooltip: true,
     width: 100,
+    search: true,
     formOptions: {
       el: "input"
     }
@@ -169,6 +185,7 @@ const columns = [
     title: "单选框",
     dataIndex: "radio",
     width: 100,
+    search: true,
     formOptions: {
       el: "radio",
       options: [
@@ -189,6 +206,7 @@ const columns = [
     title: "开关",
     dataIndex: "switch",
     width: 100,
+    search: true,
     formOptions: {
       el: "switch",
       checkedChildren: "开",
@@ -201,6 +219,7 @@ const columns = [
     title: "日期",
     dataIndex: "datepicker",
     width: 100,
+    search: true,
     formOptions: {
       el: "datepicker",
       options: {}
@@ -211,6 +230,7 @@ const columns = [
     title: "时间",
     dataIndex: "timepicker",
     width: 100,
+    search: true,
     formOptions: {
       el: "timepicker",
       options: {}
@@ -222,6 +242,7 @@ const columns = [
     dataIndex: "cascader",
     width: 100,
     tooltip: true,
+    search: true,
     formOptions: {
       el: "cascader",
       options: [
@@ -316,7 +337,7 @@ const columns = [
 ];
 
 const data = [];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 18; i++) {
   data.push({
     key: i,
     name: `${i}`,
@@ -357,10 +378,16 @@ export default {
       defaultData: {}
     };
   },
+  computed: {
+    selcolumns() {
+      return this.columns.filter(item => item["search"]);
+    }
+  },
   methods: {
     handleEdit(text, record) {
+      console.log(text, record);
       this.showForm = true;
-      this.defaultData = record;
+      this.defaultData = JSON.parse(JSON.stringify(record));
     }
   }
 };

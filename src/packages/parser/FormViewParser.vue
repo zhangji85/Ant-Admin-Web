@@ -1,7 +1,14 @@
 <template>
   <div class="form-view-parser">
     <a-spin :spinning="loading">
-      <a-form :form="formAction" @submit="handleSubmit" class="form">
+      <a-form-model
+        :model="defaultData"
+        :rules="rules"
+        :labelCol="{ span: labelCol }"
+        :wrapperCol="{ span: wrapperCol }"
+        ref="parserForm"
+        class="form"
+      >
         <a-row>
           <template v-for="item in sourceData">
             <a-col :xs="24" :sm="24" :md="12" :lg="12" :key="item._uuid">
@@ -10,12 +17,11 @@
                 :scope="item"
                 :value="defaultData[item.dataIndex]"
               >
-                <a-form-item
+                <a-form-model-item
                   :key="item._uuid"
                   v-if="item.formOptions"
                   :label="item.title"
-                  :labelCol="{ span: labelCol }"
-                  :wrapperCol="{ span: wrapperCol }"
+                  :prop="item.dataIndex"
                 >
                   <!-- input 输入框 -->
                   <a-input
@@ -25,29 +31,9 @@
                     :placeholder="item.formOptions.placeholder"
                     :type="item.formOptions.type"
                     :ref="item.dataIndex"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: myQs(item.dataIndex)
-                      }
-                    ]"
+                    :allowClear="item.formOptions.allowClear"
+                    v-model="defaultData[item.dataIndex]"
                   >
-                    <a-icon
-                      v-if="
-                        item.formOptions.allowClear &&
-                          formAction.getFieldsValue([item.dataIndex])[
-                            item.dataIndex
-                          ] &&
-                          formAction.getFieldsValue([item.dataIndex])[
-                            item.dataIndex
-                          ].length
-                      "
-                      slot="suffix"
-                      theme="filled"
-                      type="close-circle"
-                      @click="emitEmpty(item.dataIndex)"
-                    />
                   </a-input>
                   <!-- input.search 搜索框 -->
                   <a-input-search
@@ -56,13 +42,7 @@
                     :size="size"
                     :placeholder="item.formOptions.placeholder"
                     :type="item.formOptions.type"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: myQs(item.dataIndex)
-                      }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                   ></a-input-search>
                   <!-- select 选择器 -->
                   <a-select
@@ -71,15 +51,14 @@
                     :size="size"
                     :placeholder="item.formOptions.placeholder"
                     :mode="item.formOptions.type"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: defaultData[item.dataIndex]
-                      }
-                    ]"
-                    :options="item.formOptions.options"
+                    :allowClear="item.formOptions.allowClear"
+                    v-model="defaultData[item.dataIndex]"
                   >
+                    <template v-for="opt in item.formOptions.options">
+                      <a-select-option :value="opt.value" :key="opt._uuid">
+                        {{ opt.label }}
+                      </a-select-option>
+                    </template>
                   </a-select>
                   <!-- switch 开关 -->
                   <a-switch
@@ -88,23 +67,14 @@
                     :size="size"
                     :checkedChildren="item.checkedChildren"
                     :unCheckedChildren="item.uncheckedChildren"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        valuePropName: 'checked',
-                        initialValue: Boolean(defaultData[item.dataIndex])
-                      }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                   ></a-switch>
                   <!-- radio 单选框 -->
                   <a-radio-group
                     v-else-if="item.formOptions.el == 'radio'"
                     :disabled="item._disabled"
                     :size="size"
-                    v-decorator="[
-                      item.dataIndex,
-                      { initialValue: defaultData[item.dataIndex] }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                     :options="item.formOptions.options"
                   ></a-radio-group>
                   <!-- checkbox 复选框 -->
@@ -112,10 +82,7 @@
                     v-else-if="item.formOptions.el == 'checkbox'"
                     :disabled="item._disabled"
                     :size="size"
-                    v-decorator="[
-                      item.dataIndex,
-                      { initialValue: defaultData[item.dataIndex] }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                     :options="item.formOptions.options"
                   ></a-checkbox-group>
                   <!-- datapicker 日期选择器 -->
@@ -127,16 +94,7 @@
                     :size="size"
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: moment(
-                          defaultData[item.dataIndex],
-                          'YYYY-MM-DD'
-                        )
-                      }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                   />
                   <!-- timepicker 时间选择器 -->
                   <a-time-picker
@@ -147,16 +105,7 @@
                     :size="size"
                     format="HH:mm:ss"
                     value-format="HH:mm:ss"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: moment(
-                          defaultData[item.dataIndex],
-                          'HH:mm:ss'
-                        )
-                      }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                   />
                   <!-- datatimepicker 日期时间选择器 -->
                   <a-date-picker
@@ -168,16 +117,7 @@
                     :size="size"
                     format="YYYY-MM-DD HH:mm:ss"
                     value-format="YYYY-MM-DD HH:mm:ss"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: moment(
-                          defaultData[item.dataIndex],
-                          'YYYY-MM-DD HH:mm:ss'
-                        )
-                      }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                   />
                   <!-- cascader 级联选择器 -->
                   <a-cascader
@@ -185,49 +125,28 @@
                     :disabled="item._disabled"
                     :options="item.formOptions.options"
                     :size="size"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: defaultData[item.dataIndex]
-                      }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                   />
                   <!-- rate 评分 -->
                   <a-rate
                     v-else-if="item.formOptions.el == 'rate'"
                     :disabled="item._disabled"
                     allowHalf
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: myQs(item.dataIndex)
-                      }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                   />
                   <!-- textarea 文本域 -->
                   <a-textarea
                     v-else-if="item.formOptions.el == 'textarea'"
                     :disabled="item._disabled"
                     :size="size"
-                    v-decorator="[
-                      item.dataIndex,
-                      {
-                        rules: item.formOptions.rules,
-                        initialValue: myQs(item.dataIndex)
-                      }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                     :rows="3"
                   />
                   <!-- slider 滑动输入条 -->
                   <a-slider
                     v-else-if="item.formOptions.el == 'slider'"
                     :disabled="item._disabled"
-                    v-decorator="[
-                      item.dataIndex,
-                      { initialValue: defaultData[item.dataIndex] }
-                    ]"
+                    v-model="defaultData[item.dataIndex]"
                   />
                   <!-- upload 图片上传 -->
                   <div
@@ -238,18 +157,21 @@
                       :action="item.formOptions.action"
                       listType="picture-card"
                       @preview="handlePreview"
-                      @change="handleChange"
+                      @change="handleChange($event, item.dataIndex)"
                       :remove="handleRemove"
-                      v-decorator="[
-                        item.dataIndex,
-                        {
-                          valuePropName: 'fileList',
-                          getValueFromEvent: normFile,
-                          initialValue: defaultData[item.dataIndex]
-                        }
-                      ]"
+                      :defaultFileList="defaultData[item.dataIndex]"
+                      v-model="fileList"
                     >
-                      <div v-if="defaultData[item.dataIndex].length < 3">
+                      <div
+                        v-if="
+                          Array.isArray(defaultData[item.dataIndex]) &&
+                            defaultData[item.dataIndex].length < 3
+                        "
+                      >
+                        <a-icon type="plus" />
+                        <div class="ant-upload-text">上传</div>
+                      </div>
+                      <div v-else>
                         <a-icon type="plus" />
                         <div class="ant-upload-text">上传</div>
                       </div>
@@ -273,23 +195,16 @@
                       defaultExpandAll
                       @select="onSelect"
                       @expand="onExpand"
-                      v-decorator="[
-                        item.dataIndex,
-                        {
-                          valuePropName: 'checkedKeys',
-                          rules: item.formOptions.rules,
-                          initialValue: defaultData[item.dataIndex]
-                        }
-                      ]"
+                      v-model="defaultData[item.dataIndex]"
                       :treeData="item.formOptions.options"
                     ></a-tree>
                   </template>
-                </a-form-item>
+                </a-form-model-item>
               </slot>
             </a-col>
           </template>
         </a-row>
-      </a-form>
+      </a-form-model>
     </a-spin>
   </div>
 </template>
@@ -333,14 +248,24 @@ export default {
   data() {
     return {
       locale,
-      formAction: this.$form.createForm(this, {
-        onValuesChange: this.onValuesChange
-      }),
+
       previewVisible: false,
+      fileList: [],
       previewImage: ""
     };
   },
   mounted() {},
+  computed: {
+    rules() {
+      let rules = {};
+      this.sourceData.forEach((v, i) => {
+        if (v.formOptions["rules"]) {
+          rules[v.dataIndex] = v.formOptions["rules"];
+        }
+      });
+      return rules;
+    }
+  },
   methods: {
     moment,
     onValuesChange(props, values) {
@@ -350,16 +275,15 @@ export default {
       return eval("this.defaultData." + s);
     },
     emitEmpty(value) {
-      this.formAction.setFieldsValue({ [value]: "" });
+      this.$set(this.defaultData, "value", "");
     },
-    handleSubmit(e) {
-      e.preventDefault();
-      this.formAction.validateFields((err, values) => {
-        if (!err) {
-          this.$emit("handle-submit", values);
-          this.formAction.resetFields();
+    handleSubmit() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          this.$emit("handle-submit", this.defaultData);
+          this.$refs.parserForm.resetFields();
         } else {
-          this.formAction.validateFieldsAndScroll();
+          return false;
         }
       });
     },
@@ -370,9 +294,10 @@ export default {
       this.previewImage = file.url || file.thumbUrl;
       this.previewVisible = true;
     },
-    handleChange({ fileList }) {
-      this.fileList = fileList;
-      this.formAction.setFieldsValue({ upload: fileList });
+    handleChange(value, key) {
+      console.log(value, key);
+      this.fileList = "fileList";
+      this.$set(this.defaultData, key, "fileList");
     },
     handleRemove(file) {
       console.log("TCL: remove -> file", file);

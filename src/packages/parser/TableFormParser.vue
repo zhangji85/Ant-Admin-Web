@@ -5,11 +5,11 @@
       :sourceData="sourceData"
       :tableData="tableData"
     ></v-table-parser>
-    <v-create-form
+    <v-form-parser
       model="modal"
       :sourceData="sourceData"
       :defaultData="rowData"
-    ></v-create-form>
+    ></v-form-parser>
   </div>
 </template>
 
@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      rowData: this.defaultData
+      rowData: JSON.parse(JSON.stringify(this.defaultData))
     };
   },
   mounted() {},

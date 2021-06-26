@@ -1,192 +1,229 @@
 <template>
   <div class="table-parser">
-    <a-spin :spinning="loading">
-      <template v-if="sourceData.length">
-        <div ref="tableBox">
+    <a-spin
+      :spinning="loading || !reRender"
+      :style="{ minHeight: tableBoxHeight + 'px' }"
+    >
+      <template v-if="columns.length && reRender">
+        <div>
           <!-- 表格设置 -->
           <div class="toolbar">
-            <!-- 刷新 -->
-            <div class="toolbar-item">
-              <a-tooltip placement="top">
-                <template slot="title">
-                  <span>表格斑马纹</span>
-                </template>
-                <a-switch
-                  checked-children="开"
-                  un-checked-children="关"
-                  size="small"
-                  style="transform: translateY(-12.5%);"
-                  @change="renderStripe"
-                />
-              </a-tooltip>
-            </div>
-            <a-divider
-              type="vertical"
-              style="margin-right: -4px;margin-left: 12px;"
-            />
-            <div class="toolbar-item">
-              <a-tooltip placement="top">
-                <template slot="title">
-                  <span>刷新</span>
-                </template>
-                <a-icon type="reload" />
-              </a-tooltip>
-            </div>
-            <!-- 密度 -->
-            <div class="toolbar-item">
-              <a-tooltip placement="top">
-                <template slot="title">
-                  <span>密度</span>
-                </template>
-                <a-dropdown
-                  overlayClassName="overlay"
-                  placement="bottomCenter"
-                  :trigger="['click']"
-                >
-                  <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-                    <a-icon
-                      type="column-height"
-                      style="color: rgba(0, 0, 0, 0.65);"
-                    />
-                  </a>
-                  <a-menu slot="overlay" @click="menuClick">
-                    <template v-for="item in meunInfo">
-                      <a-menu-item
-                        :key="item.key"
-                        :class="item.key == tableSize ? 'overlay-selected' : ''"
-                      >
-                        <div style="width: 60px;">{{ item.title }}</div>
-                      </a-menu-item>
-                    </template>
-                  </a-menu>
-                </a-dropdown>
-              </a-tooltip>
-            </div>
-            <!-- 列设置 -->
-            <div class="toolbar-item">
-              <a-tooltip placement="top">
-                <template slot="title">
-                  <span>列设置</span>
-                </template>
-                <a-popover
-                  trigger="click"
-                  style="with: 180px"
-                  arrow-point-at-center
-                  placement="bottomRight"
-                  :getPopupContainer="
-                    triggerNode => {
-                      return triggerNode.parentNode;
-                    }
-                  "
-                >
-                  <template slot="content">
-                    <a-checkbox-group
-                      :default-value="defaultValue"
-                      v-model="checkedList"
-                      @change="onChange"
-                    >
-                      <div
-                        v-for="(item, index) in columns"
-                        :key="'ch' + index"
-                        class="check-item"
-                      >
-                        <a-icon type="more" style="width: 1px" />
-                        <a-icon type="more" />
-                        <a-checkbox :value="item.key">
-                          {{ item.title }}
-                        </a-checkbox>
-                      </div>
-                    </a-checkbox-group>
+            <div class="toolbar-item">{{ title }}</div>
+            <div class="toolbar-right">
+              <div class="tool-btns">
+                <slot name="toolbtns"></slot>
+              </div>
+              <!-- 斑马纹 -->
+              <div class="toolbar-item">
+                <a-tooltip placement="top">
+                  <template slot="title">
+                    <span>表格斑马纹</span>
                   </template>
-                  <div slot="title" class="check-item" style="margin-left: 8px">
-                    <a-checkbox
-                      :indeterminate="indeterminate"
-                      :checked="checkAll"
-                      @change="onCheckAllChange"
+                  <a-switch
+                    checked-children="开"
+                    un-checked-children="关"
+                    style="transform: translateY(-12.5%);"
+                    @change="renderStripe"
+                  />
+                </a-tooltip>
+              </div>
+              <div class="toolbar-vertical">
+                <a-divider type="vertical" />
+              </div>
+              <!-- 刷新 -->
+              <div class="toolbar-item">
+                <a-tooltip placement="top">
+                  <template slot="title">
+                    <span>刷新</span>
+                  </template>
+                  <a-icon type="reload" />
+                </a-tooltip>
+              </div>
+              <!-- 密度 -->
+              <div class="toolbar-item">
+                <a-tooltip placement="top">
+                  <template slot="title">
+                    <span>密度</span>
+                  </template>
+                  <a-dropdown
+                    overlayClassName="overlay"
+                    placement="bottomCenter"
+                    :trigger="['click']"
+                  >
+                    <a
+                      class="ant-dropdown-link"
+                      @click="e => e.preventDefault()"
                     >
-                      <span class="check-title">列展示</span>
-                    </a-checkbox>
-                    <a-button type="link" class="reset-btn" @click="resetCheck">
-                      重置
-                    </a-button>
-                  </div>
-                  <a-icon type="setting" />
-                </a-popover>
-              </a-tooltip>
+                      <a-icon
+                        type="column-height"
+                        style="color: rgba(0, 0, 0, 0.65);"
+                      />
+                    </a>
+                    <a-menu slot="overlay" @click="menuClick">
+                      <template v-for="item in meunInfo">
+                        <a-menu-item
+                          :key="item.key"
+                          :class="
+                            item.key == tableSize ? 'overlay-selected' : ''
+                          "
+                        >
+                          <div style="width: 60px;">{{ item.title }}</div>
+                        </a-menu-item>
+                      </template>
+                    </a-menu>
+                  </a-dropdown>
+                </a-tooltip>
+              </div>
+              <!-- 列设置 -->
+              <div class="toolbar-item">
+                <a-tooltip placement="top">
+                  <template slot="title">
+                    <span>列设置</span>
+                  </template>
+                  <a-popover
+                    trigger="click"
+                    style="with: 180px"
+                    arrow-point-at-center
+                    placement="bottomRight"
+                    :getPopupContainer="
+                      triggerNode => {
+                        return triggerNode.parentNode;
+                      }
+                    "
+                  >
+                    <template slot="content">
+                      <a-checkbox-group
+                        :default-value="defaultValue"
+                        v-model="checkedList"
+                        @change="onChange"
+                      >
+                        <div
+                          v-for="(item, index) in columns"
+                          :key="'ch' + index"
+                          class="check-item"
+                        >
+                          <a-icon type="more" style="width: 1px" />
+                          <a-icon type="more" />
+                          <a-checkbox :value="item.key">
+                            {{ item.title }}
+                          </a-checkbox>
+                        </div>
+                      </a-checkbox-group>
+                    </template>
+                    <div
+                      slot="title"
+                      class="check-item"
+                      style="margin-left: 8px"
+                    >
+                      <a-checkbox
+                        :indeterminate="indeterminate"
+                        :checked="checkAll"
+                        @change="onCheckAllChange"
+                      >
+                        <span class="check-title">列展示</span>
+                      </a-checkbox>
+                      <a-button
+                        type="link"
+                        class="reset-btn"
+                        @click="resetCheck"
+                      >
+                        重置
+                      </a-button>
+                    </div>
+                    <a-icon type="setting" />
+                  </a-popover>
+                </a-tooltip>
+              </div>
             </div>
           </div>
           <!-- 表格 -->
-          <a-table
-            ref="table"
-            :locale="locale"
-            :rowSelection="rowSelection"
-            :size="tableSize"
-            :columns="tableHead"
-            :data-source="tableData"
-            :indentSize="0"
-            :bordered="bordered"
-            :loading="loading"
-            :rowKey="rowKey"
-            :scroll="{ x: width }"
-            v-resize.debounce.500="getDomWidth"
-          >
-            <template
-              slot-scope="text, record"
-              :slot="item.slot"
-              v-for="item in tableHead"
+          <div class="tableBox" ref="tableBox">
+            <a-table
+              ref="table"
+              :locale="locale"
+              :rowSelection="rowSelection"
+              :size="tableSize"
+              :columns="tableHead"
+              :data-source="tableData"
+              :indentSize="0"
+              :bordered="bordered"
+              :loading="!reRender"
+              :rowKey="
+                (record, index) => {
+                  return 'tabparser' + index;
+                }
+              "
+              :scroll="{ x: width, y: height }"
+              v-resize.debounce.500="getDomWidth"
             >
-              <div :style="{ width: item.width + 'px' }" :key="item.dataIndex">
-                <slot :name="item.slot" :row="record" :header="item">
-                  <template v-if="item.slot == 'action'">
-                    <div :style="{ width: item.width + 'px' }">
-                      <a href="javascript:void(0);">
-                        <span @click="handleInfo(text, record)">详情</span>
-                        <a-divider type="vertical" />
-                        <span @click="handleEdit(text, record)">编辑</span>
-                        <a-divider type="vertical" />
-                        <a-popconfirm
-                          v-if="tableData.length"
-                          title="确定删除？"
-                          ok-text="确定"
-                          cancel-text="取消"
-                          @confirm="() => handleDel(text, record)"
-                        >
-                          <span style="color:#f00">删除</span>
-                        </a-popconfirm>
-                      </a>
-                    </div>
-                  </template>
-                  <template v-else>
-                    <div v-if="item.tooltip">
-                      <a-tooltip>
-                        <template slot="title">{{ text }}</template>
-                        <div
-                          class="textover1"
-                          :style="{ width: item.width + 'px' }"
-                        >
-                          {{ text }}
-                        </div>
-                      </a-tooltip>
-                    </div>
-                    <div
-                      v-else
-                      class="textover1"
-                      :style="{ width: item.width + 'px' }"
-                    >
-                      {{ text }}
-                    </div>
-                  </template>
-                </slot>
-              </div>
-            </template>
-          </a-table>
+              <template
+                slot-scope="text, record"
+                :slot="item.slot"
+                v-for="item in tableHead"
+              >
+                <div
+                  :style="{ width: item.width + 'px' }"
+                  :key="item.dataIndex"
+                >
+                  <slot :name="item.slot" :row="record" :header="item">
+                    <template v-if="item.slot == 'action'">
+                      <div :style="{ width: item.width + 'px' }">
+                        <a href="javascript:void(0);">
+                          <span @click="handleInfo(text, record)">详情</span>
+                          <a-divider type="vertical" />
+                          <span @click="handleEdit(text, record)">编辑</span>
+                          <a-divider type="vertical" />
+                          <a-popconfirm
+                            v-if="tableData.length"
+                            title="确定删除？"
+                            ok-text="确定"
+                            cancel-text="取消"
+                            @confirm="() => handleDel(text, record)"
+                          >
+                            <span style="color:#f00">删除</span>
+                          </a-popconfirm>
+                        </a>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div v-if="item.tooltip">
+                        <a-tooltip>
+                          <template slot="title">{{ text }}</template>
+                          <div
+                            class="textover1"
+                            :style="{ width: item.width + 'px' }"
+                          >
+                            {{ text }}
+                          </div>
+                        </a-tooltip>
+                      </div>
+                      <div
+                        v-else
+                        class="textover1"
+                        :style="{ width: item.width + 'px' }"
+                      >
+                        {{ text }}
+                      </div>
+                    </template>
+                  </slot>
+                </div>
+              </template>
+            </a-table>
+          </div>
         </div>
       </template>
+      <a-card
+        :loading="loading"
+        v-else
+        :style="{ minHeight: tableBoxHeight + 'px', textAlign: 'center' }"
+        >暂无数据</a-card
+      >
     </a-spin>
   </div>
 </template>
 
 <script>
+import { getTableScroll } from "@/utils/TableScrollY";
 export default {
   name: "v-table-parser",
   props: {
@@ -202,6 +239,9 @@ export default {
         return [];
       }
     },
+    title: {
+      type: String
+    },
     rowKey: Function,
     loading: {
       type: Boolean,
@@ -214,6 +254,10 @@ export default {
     bordered: {
       type: Boolean,
       default: false
+    },
+    scrollY: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -227,6 +271,10 @@ export default {
       indeterminate: false,
       checkAll: true,
       tableSize: this.size,
+      reRender: true,
+      tableBoxWidth: 0,
+      tableBoxHeight: 0,
+      height: false,
       meunInfo: [
         {
           title: "默认",
@@ -242,6 +290,14 @@ export default {
         }
       ]
     };
+  },
+  watch: {
+    size(val) {
+      this.reRender = false;
+      this.$nextTick(() => {
+        this.reRender = true;
+      });
+    }
   },
   mounted() {},
   computed: {
@@ -272,12 +328,9 @@ export default {
       // 滚动宽度小于容器宽度的时候去掉fixed
       return this.sourceData
         .map((v, i) => {
-          if (i === 0 && this.width > this.tableBoxWidth) {
-            v.fixed = "left";
-          } else {
+          if (i === 0 && this.width < this.tableBoxWidth) {
             v.fixed = false;
           }
-
           v.key = v.dataIndex;
           v.slot = v.dataIndex;
           v.scopedSlots = { customRender: v.dataIndex };
@@ -320,6 +373,9 @@ export default {
       console.log(">>>>>>>>>>>>>>>>>>>>>>");
       this.tableBoxWidth = this.$refs.tableBox.clientWidth;
       this.tableBoxHeight = this.$refs.tableBox.clientHeight;
+      this.height = this.scrollY
+        ? getTableScroll({ ref: this.$refs.tableBox })
+        : false;
     },
     handleEdit(text, record) {
       this.$emit("handle-edit", text, record);
@@ -378,16 +434,27 @@ export default {
 <style scoped>
 .toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  height: 48px;
-  line-height: 48px;
+  height: 64px;
+  line-height: 64px;
   padding: 0 24px;
+}
+.tool-btns {
+  margin-right: 12px;
+}
+.toolbar-right {
+  display: flex;
+  justify-content: flex-end;
 }
 .toolbar-item {
   margin-left: 16px;
   font-size: 16px;
   cursor: pointer;
+}
+.toolbar-vertical {
+  margin-right: -8px;
+  margin-left: 8px;
 }
 .overlay {
   width: 80px;
