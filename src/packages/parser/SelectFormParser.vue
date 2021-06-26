@@ -273,18 +273,8 @@ export default {
   },
   methods: {
     moment,
-    getDCount() {
-      this.dcount++;
-      console.log("this.dcount=", this.dcount);
-    },
     onValuesChange(props, values) {
       //
-    },
-    myQs(s) {
-      return eval("this.defaultData." + s);
-    },
-    emitEmpty(value) {
-      this.formAction.setFieldsValue({ [value]: "" });
     },
     handleSubmit() {
       this.$refs.selectForm.validate(valid => {

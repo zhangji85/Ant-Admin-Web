@@ -385,7 +385,6 @@ export default {
   },
   methods: {
     handleEdit(text, record) {
-      console.log(text, record);
       this.showForm = true;
       this.defaultData = JSON.parse(JSON.stringify(record));
     }

@@ -271,12 +271,6 @@ export default {
     onValuesChange(props, values) {
       //
     },
-    myQs(s) {
-      return eval("this.defaultData." + s);
-    },
-    emitEmpty(value) {
-      this.$set(this.defaultData, "value", "");
-    },
     handleSubmit() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
