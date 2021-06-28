@@ -12,7 +12,7 @@
       <v-select-form-parser
         v-if="selcolumns.length"
         :sourceData="selcolumns"
-        :span="6"
+        :span="8"
       ></v-select-form-parser>
       <v-table-parser
         :sourceData="columns"

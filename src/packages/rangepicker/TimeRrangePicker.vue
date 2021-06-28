@@ -1,41 +1,34 @@
 <template>
-  <div>
-    <a-row :gutter="24">
-      <a-col :xs="24" :sm="11" :md="11" :lg="11">
-        <a-time-picker
-          v-model="startValue"
-          style="width: 100%"
-          :locale="locale"
-          :disabledHours="disabledStartHours"
-          :disabledMinutes="disabledStartMinutes"
-          :disabledSeconds="disabledStartSeconds"
-          :format="format"
-          :disabled="disabled"
-          :size="size"
-          placeholder="开始时间"
-          @openChange="handleStartOpenChange"
-        />
-      </a-col>
-      <a-col :xs="24" :sm="2" :md="2" :lg="2" style="text-align: center">
-        <span style="font-size: 18px">~</span>
-      </a-col>
-      <a-col :xs="24" :sm="11" :md="11" :lg="11">
-        <a-time-picker
-          v-model="endValue"
-          style="width: 100%"
-          :locale="locale"
-          :disabledHours="disabledEndHours"
-          :disabledMinutes="disabledEndMinutes"
-          :disabledSeconds="disabledEndSeconds"
-          :format="format"
-          :disabled="disabled"
-          :size="size"
-          placeholder="结束时间"
-          :open="endOpen"
-          @openChange="handleEndOpenChange"
-        />
-      </a-col>
-    </a-row>
+  <div class="range-picker-div">
+    <a-time-picker
+      v-model="startValue"
+      style="width: 100%"
+      :locale="locale"
+      :disabledHours="disabledStartHours"
+      :disabledMinutes="disabledStartMinutes"
+      :disabledSeconds="disabledStartSeconds"
+      :format="format"
+      :disabled="disabled"
+      :size="size"
+      placeholder="开始时间"
+      @openChange="handleStartOpenChange"
+    />
+
+    <div style="font-size: 14px;padding: 0 5px">~</div>
+    <a-time-picker
+      v-model="endValue"
+      style="width: 100%"
+      :locale="locale"
+      :disabledHours="disabledEndHours"
+      :disabledMinutes="disabledEndMinutes"
+      :disabledSeconds="disabledEndSeconds"
+      :format="format"
+      :disabled="disabled"
+      :size="size"
+      placeholder="结束时间"
+      :open="endOpen"
+      @openChange="handleEndOpenChange"
+    />
   </div>
 </template>
 <script>
@@ -176,3 +169,11 @@ export default {
   }
 };
 </script>
+<style scoped>
+.range-picker-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+</style>

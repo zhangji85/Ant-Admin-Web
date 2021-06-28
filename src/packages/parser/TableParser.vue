@@ -377,9 +377,11 @@ export default {
       console.log(">>>>>>>>>>>>>>>>>>>>>>");
       this.tableBoxWidth = this.$refs.tableBox.clientWidth;
       this.tableBoxHeight = this.$refs.tableBox.clientHeight;
-      this.height = this.scrollY
-        ? getTableScroll({ ref: this.$refs.tableBox })
-        : false;
+      let height =
+        getTableScroll({ ref: this.$refs.tableBox }) < 520
+          ? document.body.clientHeight - 240
+          : getTableScroll({ ref: this.$refs.tableBox });
+      this.height = this.scrollY ? height : false;
     },
     handleEdit(text, record) {
       this.$emit("handle-edit", text, record);

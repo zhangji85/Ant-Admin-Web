@@ -20,8 +20,8 @@
       tHeaderBottom = tHeader.getBoundingClientRect().bottom
     }
     // 窗体高度-表格内容顶部的高度-表格内容底部的高度
-    // let height = document.body.clientHeight - tHeaderBottom - extraHeight
-    let height = `calc(100vh - ${tHeaderBottom + extraHeight}px)`
+    let height = document.body.clientHeight - tHeaderBottom - extraHeight
+    // let height = `calc(100vh - ${tHeaderBottom + extraHeight}px)`
     // 空数据的时候表格高度保持不变,暂无数据提示文本图片居中
     if (ref && ref.current) {
       let placeholder = ref.current.getElementsByClassName('ant-table-placeholder')[0]
