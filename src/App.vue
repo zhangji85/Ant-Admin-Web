@@ -12,8 +12,8 @@ export default {
 
 <style>
 #app {
-  /* font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
@@ -21,7 +21,7 @@ export default {
   height: 100%;
 }
 body {
-  font-family: Artiely !important;
+  /* font-family: Artiely !important; */
 }
 ::-webkit-scrollbar {
   width: 0.5rem;
