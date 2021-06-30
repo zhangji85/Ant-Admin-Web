@@ -210,7 +210,9 @@
                     <template v-else>
                       <div v-if="item.tooltip">
                         <a-tooltip>
-                          <template slot="title">{{ text }}</template>
+                          <template slot="title">
+                            <pre class="pre-div">{{ text }}</pre>
+                          </template>
                           <div :style="{ width: item.width + 'px' }">
                             <v-icon-copy :copy="text" v-if="item.copy">
                               <div class="textover1">
@@ -520,5 +522,11 @@ export default {
 }
 .columnHide {
   display: none;
+}
+.pre-div {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin-bottom: 0;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
 }
 </style>

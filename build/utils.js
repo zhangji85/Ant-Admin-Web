@@ -58,7 +58,15 @@ exports.cssLoaders = function (options) {
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
-    less: generateLoaders('less'),
+    less: generateLoaders('less', {
+      javascriptEnabled: true,
+      
+    }).concat({
+     loader: 'sass-resources-loader',
+     options: {
+       resources: path.resolve(__dirname, '../src/style/antd-custom.less') //这里写自己的文件路径
+     }
+   }),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),

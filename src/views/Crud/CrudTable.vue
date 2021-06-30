@@ -93,6 +93,7 @@ const columns = [
     dataIndex: "input3",
     tooltip: true,
     width: 100,
+    copy: true,
     formOptions: {
       el: "input"
     }
@@ -287,6 +288,7 @@ const columns = [
     title: "文本域",
     dataIndex: "textarea",
     width: 100,
+    tooltip: true,
     copy: true,
     formOptions: {
       el: "textarea"

@@ -5,7 +5,7 @@ import "./assets/font/font.css";
 import Antd from 'ant-design-vue/es';
 import store from '@/store';
 import App from './App'
-import 'ant-design-vue/dist/antd.css';
+import './style/antd-variables.less';
 import router from './router'
 import './packages'
 import NProgress from 'nprogress' // 进度条
@@ -34,16 +34,6 @@ router.beforeEach((to,from,next) => {
  
 router.afterEach(() => {
   NProgress.done();
-  setTimeout(()=>{
-    // 此处粘贴百度统计复制过来的代码
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?1b329cb0d5558d09dfafb00d46f02386";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
-    })();
-},0);
 })
 
 const $mc = {}
