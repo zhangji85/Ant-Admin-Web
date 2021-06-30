@@ -256,11 +256,17 @@ export default {
   },
   mounted() {},
   computed: {
+    columns() {
+      return this.sourceData.filter(v => {
+        return !v.notformRender;
+      });
+    },
     rules() {
       let rules = {};
-      this.sourceData.forEach((v, i) => {
-        if (v.formOptions["rules"]) {
-          rules[v.dataIndex] = v.formOptions["rules"];
+      this.columns.forEach((v, i) => {
+        let formOptions = v["formOptions"];
+        if (formOptions && formOptions["rules"]) {
+          rules[v.dataIndex] = formOptions["rules"];
         }
       });
       return rules;

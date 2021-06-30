@@ -166,22 +166,44 @@
                   :key="item.dataIndex"
                 >
                   <slot :name="item.slot" :row="record" :header="item">
-                    <template v-if="item.slot == 'action'">
+                    <template v-if="item.slot == 'operAction'">
                       <div :style="{ width: item.width + 'px' }">
                         <a href="javascript:void(0);">
-                          <span @click="handleInfo(text, record)">详情</span>
-                          <a-divider type="vertical" />
-                          <span @click="handleEdit(text, record)">编辑</span>
-                          <a-divider type="vertical" />
-                          <a-popconfirm
-                            v-if="tableData.length"
-                            title="确定删除？"
-                            ok-text="确定"
-                            cancel-text="取消"
-                            @confirm="() => handleDel(text, record)"
+                          <template v-for="btn in item.customActions">
+                            <span
+                              :style="customStyle(btn['color'])"
+                              :key="btn._uuid"
+                              @click="handleCustom(btn, record)"
+                            >
+                              {{ btn.text }}
+                            </span>
+                            <a-divider type="vertical" :key="btn._uuid" />
+                          </template>
+                          <template
+                            v-if="item.defaultActions.includes('select')"
                           >
-                            <span style="color:#f00">删除</span>
-                          </a-popconfirm>
+                            <span @click="handleInfo(text, record)">详情</span>
+                            <a-divider type="vertical" />
+                          </template>
+                          <template
+                            v-if="item.defaultActions.includes('update')"
+                          >
+                            <span @click="handleEdit(text, record)">编辑</span>
+                            <a-divider type="vertical" />
+                          </template>
+                          <template
+                            v-if="item.defaultActions.includes('delete')"
+                          >
+                            <a-popconfirm
+                              v-if="tableData.length"
+                              title="确定删除？"
+                              ok-text="确定"
+                              cancel-text="取消"
+                              @confirm="() => handleDel(text, record)"
+                            >
+                              <span style="color:#f00">删除</span>
+                            </a-popconfirm>
+                          </template>
                         </a>
                       </div>
                     </template>
@@ -189,11 +211,15 @@
                       <div v-if="item.tooltip">
                         <a-tooltip>
                           <template slot="title">{{ text }}</template>
-                          <div
-                            class="textover1"
-                            :style="{ width: item.width + 'px' }"
-                          >
-                            {{ text }}
+                          <div :style="{ width: item.width + 'px' }">
+                            <v-icon-copy :copy="text" v-if="item.copy">
+                              <div class="textover1">
+                                {{ text }}
+                              </div>
+                            </v-icon-copy>
+                            <div class="textover1" v-else>
+                              {{ text }}
+                            </div>
                           </div>
                         </a-tooltip>
                       </div>
@@ -202,7 +228,10 @@
                         class="textover1"
                         :style="{ width: item.width + 'px' }"
                       >
-                        {{ text }}
+                        <v-icon-copy :copy="text" v-if="item.copy">
+                          {{ text }}
+                        </v-icon-copy>
+                        <span v-else>{{ text }}</span>
                       </div>
                     </template>
                   </slot>
@@ -224,6 +253,9 @@
 
 <script>
 import { getTableScroll } from "@/utils/TableScrollY";
+
+import lessMapCss from "@/style/antd-custom.js";
+
 export default {
   name: "v-table-parser",
   props: {
@@ -289,7 +321,8 @@ export default {
           title: "紧凑",
           key: "small"
         }
-      ]
+      ],
+      globalCss: lessMapCss
     };
   },
   watch: {
@@ -332,6 +365,9 @@ export default {
           if (i === 0 && this.width < this.tableBoxWidth) {
             v.fixed = false;
           }
+          if (v.dataIndex == "operAction") {
+            v.fixed = this.width < this.tableBoxWidth ? false : "right";
+          }
           v.key = v.dataIndex;
           v.slot = v.dataIndex;
           v.scopedSlots = { customRender: v.dataIndex };
@@ -339,17 +375,7 @@ export default {
         })
         .filter(v => {
           return !v.hidden;
-        })
-        .concat([
-          {
-            title: "操作",
-            key: "operation",
-            width: 200,
-            fixed: this.width < this.tableBoxWidth ? false : "right",
-            slot: "action",
-            scopedSlots: { customRender: "action" }
-          }
-        ]);
+        });
     },
     defaultValue() {
       let defaultValue = [];
@@ -373,6 +399,11 @@ export default {
     }
   },
   methods: {
+    customStyle(color) {
+      return {
+        color: this.globalCss[color]
+      };
+    },
     getDomWidth() {
       console.log(">>>>>>>>>>>>>>>>>>>>>>");
       this.tableBoxWidth = this.$refs.tableBox.clientWidth;
@@ -382,6 +413,10 @@ export default {
           ? document.body.clientHeight - 240
           : getTableScroll({ ref: this.$refs.tableBox });
       this.height = this.scrollY ? height : false;
+    },
+    handleCustom(btnCfg, record) {
+      this.$emit("handle-custom", btnCfg, record);
+      this.$emit("handleCustom", btnCfg, record);
     },
     handleEdit(text, record) {
       this.$emit("handle-edit", text, record);

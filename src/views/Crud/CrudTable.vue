@@ -18,7 +18,6 @@
         :sourceData="columns"
         :tableData="data"
         :loading="loading"
-        title="配置化表格"
         @handle-edit="handleEdit"
       >
         <template slot="toolbtns">
@@ -83,6 +82,7 @@ const columns = [
     title: "手机号(固定长度)",
     dataIndex: "input2",
     width: 150,
+    copy: true,
     formOptions: {
       el: "input.search"
     }
@@ -287,6 +287,7 @@ const columns = [
     title: "文本域",
     dataIndex: "textarea",
     width: 100,
+    copy: true,
     formOptions: {
       el: "textarea"
     }
@@ -333,6 +334,15 @@ const columns = [
         }
       ]
     }
+  },
+  {
+    title: "操作",
+    dataIndex: "operAction",
+    width: 200,
+    fixed: "right",
+    notformRender: true,
+    defaultActions: ["select", "update", "delete"],
+    customActions: []
   }
 ];
 
@@ -385,6 +395,7 @@ export default {
   },
   methods: {
     handleEdit(text, record) {
+      console.log(text, record);
       this.showForm = true;
       this.defaultData = JSON.parse(JSON.stringify(record));
     }
