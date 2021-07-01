@@ -9,7 +9,7 @@
     >
       <div class="logo">
         <img :src="logoUrl" alt="logo" />
-        <span v-if="!collapsed">后台管理系统</span>
+        <div v-if="!collapsed" class="textover1">后台管理系统</div>
       </div>
       <div class="sider-menu">
         <menus :collapsed="collapsed"></menus>
@@ -108,6 +108,9 @@ export default {
 }
 
 .logo {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
   height: 32px;
   margin: 16px;
   line-height: 36px;
