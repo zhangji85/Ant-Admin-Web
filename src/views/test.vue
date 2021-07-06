@@ -3,7 +3,10 @@
     <v-card>
       test
       <a-input v-model="url" style="width: 50%;margin-bottom: 10px"></a-input>
-      <v-qrcode ref="qrcode"></v-qrcode>
+      <div style="width: 300px;height: 300px">
+        <v-qrcode ref="qrcode"></v-qrcode>
+      </div>
+
       <a-button type="primary" @click="create">生成二维码</a-button>
     </v-card>
   </div>
