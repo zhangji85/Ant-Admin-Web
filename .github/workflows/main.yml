@@ -1,0 +1,48 @@
+# Controls when the action will run.
+on: [push]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 我们选择使用最新的ubuntu系统
+    steps:
+      - name: checkout
+        uses: actions/checkout@master # 将代码拷贝到虚机中
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: dist
+
+      - name: Deploy to Server dist
+        uses: easingthemes/ssh-deploy@v2.1.1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          REMOTE_PORT: 22
+          TARGET: "/home/ant_admin/dist"
+
+      - name: "save comm.txt"
+        run: /usr/bin/git log -1 --oneline >> comm.txt
+
+      - name: "Send mail"
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.MAILUSERNAME }}
+          password: ${{ secrets.MAILPASSWORD }}
+          subject: Ant-Admin-Web 已部署完成
+          body: file://comm.txt
+          to: 1808240436@qq.com
+          from: Ant Admin Web
+          content_type: text/html
