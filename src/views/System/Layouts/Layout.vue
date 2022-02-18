@@ -9,7 +9,7 @@
     >
       <div class="logo">
         <img :src="logoUrl" alt="logo" />
-        <div v-if="!collapsed" class="textover1">后台管理系统</div>
+        <div v-if="!collapsed" class="textover1 sys-tilte">后台管理系统</div>
       </div>
       <div class="sider-menu">
         <menus :collapsed="collapsed"></menus>
@@ -20,12 +20,14 @@
         class="layout-header"
         :style="{ width: 'calc(100% - ' + leftWith + ')' }"
       >
-        <a-icon
-          class="trigger"
-          :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-          @click="() => (collapsed = !collapsed)"
-        />
-        <head-menu></head-menu>
+        <div class="header-top">
+          <a-icon
+            class="trigger"
+            :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+            @click="() => (collapsed = !collapsed)"
+          />
+          <head-menu></head-menu>
+        </div>
         <menu-tabs></menu-tabs>
       </a-layout-header>
       <a-layout-content
@@ -88,10 +90,11 @@ export default {
 }
 .layout-div .trigger {
   font-size: 18px;
-  line-height: 64px;
+  line-height: 48px;
   padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;
+  /* display: none; */
 }
 
 .layout-div .trigger:hover {
@@ -117,8 +120,8 @@ export default {
   flex-wrap: nowrap;
   flex-direction: row;
   height: 32px;
-  margin: 16px 0;
-  line-height: 36px;
+  margin: 8px 0;
+  line-height: 32px;
   font-size: 18px;
   color: #fff;
   padding-left: 6px;
@@ -126,10 +129,12 @@ export default {
 .logo img {
   width: 36px;
 }
-
+.sys-tilte {
+  margin-left: 8px;
+}
 .sider-menu {
   position: relative;
-  height: calc(100% - 64px);
+  height: calc(100% - 48px);
 }
 .layout-sider {
   position: fixed;
@@ -138,13 +143,12 @@ export default {
   left: 0;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
 }
-.layout-sider /deep/ .ant-menu-inline-collapsed {
-  width: 48px;
-}
 
 .layout-header {
   position: fixed;
+  align-content: center;
   width: 100%;
+  height: 48px;
   z-index: 1;
   background: #fff;
   right: 0;
@@ -155,13 +159,18 @@ export default {
   -webkit-transition: width 0.2s; /* Safari 和 Chrome */
   -o-transition: width 0.2s; /* Opera */
 }
+.header-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .layout-content {
-  margin-top: 100px;
-  min-height: calc(100% - 169px);
+  margin-top: 86px;
+  min-height: calc(100% - 155px);
 }
 
 .views-content {
-  padding: 24px;
+  padding: 20px;
   min-height: 360px;
 }
 .ant-back-top-inner {

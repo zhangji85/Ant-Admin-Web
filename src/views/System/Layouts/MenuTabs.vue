@@ -31,13 +31,11 @@
         </span>
       </a-tab-pane>
       <a-dropdown slot="tabBarExtraContent" class="extra-dropdown">
-        <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+        <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
           <a-icon type="down-square" />
         </a>
         <a-menu slot="overlay" @click="handleMenuClick">
-          <a-menu-item key="refresh-curr">
-            刷新当前标签
-          </a-menu-item>
+          <a-menu-item key="refresh-curr"> 刷新当前标签 </a-menu-item>
           <a-menu-item key="close-curr" :disabled="vuex_tabsArr.length == 1">
             关闭当前标签
           </a-menu-item>
@@ -70,10 +68,10 @@ export default {
         if (tab.id === activeKey) {
           // 当前页面新Tab
           this.$router.push({
-            path: "/" + tab.path,
+            path: '/' + tab.path,
             query: { id: tab.id }
           });
-          this.$mc.vuex("vuex_active_tabKey", tab.id);
+          this.$mc.vuex('vuex_active_tabKey', tab.id);
         }
       });
     },
@@ -86,7 +84,7 @@ export default {
           lastIndex = i - 1;
         }
       });
-      const tabsArr = this.vuex_tabsArr.filter(tab => tab.id !== targetKey);
+      const tabsArr = this.vuex_tabsArr.filter((tab) => tab.id !== targetKey);
       if (tabsArr.length && activeKey === targetKey) {
         if (lastIndex >= 0) {
           activeKey = tabsArr[lastIndex].id;
@@ -96,25 +94,25 @@ export default {
           pane = tabsArr[0];
         }
         this.$router.push({
-          path: "/" + pane.path,
+          path: '/' + pane.path,
           query: { id: pane.id }
         });
       }
-      this.$mc.vuex("vuex_tabsArr", tabsArr);
-      this.$mc.vuex("vuex_active_tabKey", activeKey);
+      this.$mc.vuex('vuex_tabsArr', tabsArr);
+      this.$mc.vuex('vuex_active_tabKey', activeKey);
     },
     handleMenuClick(e) {
       switch (e.key) {
-        case "close-curr":
+        case 'close-curr':
           this.closeCurr();
           break;
         // case "close-all":
         //   this.closeAll();
         //   break;
-        case "close-other":
+        case 'close-other':
           this.closeOther();
           break;
-        case "refresh-curr":
+        case 'refresh-curr':
           this.refreshCurr();
       }
     },
@@ -136,15 +134,15 @@ export default {
       });
       tabsArr.splice(0);
       tabsArr.splice(0, 0, currItem);
-      this.$mc.vuex("vuex_tabsArr", tabsArr);
+      this.$mc.vuex('vuex_tabsArr', tabsArr);
     },
     // 刷新当前页
     refreshCurr() {
       // 刷新当前标签
-      this.$mc.vuex("vuex_pageReload", false);
+      this.$mc.vuex('vuex_pageReload', false);
       this.$nextTick(() => {
         setTimeout(() => {
-          this.$mc.vuex("vuex_pageReload", true);
+          this.$mc.vuex('vuex_pageReload', true);
         }, 1000);
       });
     }

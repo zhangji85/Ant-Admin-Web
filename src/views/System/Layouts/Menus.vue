@@ -215,10 +215,7 @@ export default {
 .meuns-div {
   width: 100%;
 }
-.meuns-div /deep/ .ant-menu-submenu-title,
-.ant-menu-item {
-  padding-left: 14px !important;
-}
+
 .amenu {
   position: absolute;
   height: 100%;
@@ -228,17 +225,25 @@ export default {
 }
 .amenu::-webkit-scrollbar {
   /*滚动条整体样式*/
-  width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+  width: 0px; /*高宽分别对应横竖滚动条的尺寸*/
   height: 0px;
 }
 .amenu::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
-  border-radius: 10px;
+  border-radius: 0px;
   background: #54626f;
 }
-.amenu::-webkit-scrollbar-track {
-  /*滚动条里面轨道*/
-  background-color: #263848;
-  border-radius: 10px;
+.meuns-div
+  .ant-menu-inline-collapsed
+  /deep/
+  .ant-menu-submenu
+  > .ant-menu-submenu-title {
+  padding: 0 16px !important;
+}
+.meuns-div .ant-menu-inline-collapsed /deep/ .ant-menu-item {
+  padding: 0 16px !important;
+}
+.meuns-div /deep/ .ant-menu-inline-collapsed {
+  width: 48px;
 }
 </style>

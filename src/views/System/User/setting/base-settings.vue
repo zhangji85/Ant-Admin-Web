@@ -35,7 +35,7 @@
       <a-col class="gutter-row" :span="12">
         <div class="avatar-box">
           <a-avatar
-            style="background-color: #87d068"
+            style="background-color: rgba(24, 144, 255, 0.8)"
             icon="user"
             :size="128"
             class="avatar"

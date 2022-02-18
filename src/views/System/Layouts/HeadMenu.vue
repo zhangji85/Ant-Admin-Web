@@ -12,8 +12,8 @@
       <a-divider type="vertical" />
       <a-dropdown v-model="visible">
         <div class="user-info">
-          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-            <a-avatar class="avatar" icon="user" />
+          <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+            <a-avatar class="avatar" :size="24" icon="user" />
             <span style="padding-left: 5px">Admin</span>
             <a-icon type="down" />
           </a>
@@ -47,12 +47,12 @@ export default {
   },
   methods: {
     handleMenuClick(e) {
-      if (e.key === "3") {
+      if (e.key === '3') {
         this.visible = false;
       }
     },
     toGithub() {
-      window.open("https://github.com/zhangji85/Ant-Admin-Web", "_blank");
+      window.open('https://github.com/zhangji85/Ant-Admin-Web', '_blank');
     }
   }
 };
@@ -60,8 +60,8 @@ export default {
 
 <style scoped>
 .header-right {
-  position: absolute;
-  height: 64px;
+  /* position: absolute; */
+  height: 48px;
   overflow: hidden;
   right: 0;
   top: 0;
@@ -77,7 +77,7 @@ export default {
 .user-info {
   padding: 0 16px;
   font-size: 14px;
-  line-height: 64px;
+  line-height: 48px;
 }
 .user-info:hover {
   background-color: rgba(0, 0, 0, 0.025);

@@ -23,43 +23,43 @@
 <script>
 let data = [
   {
-    title: "账户密码",
-    description: "当前密码强度",
-    value: "强",
+    title: '账户密码',
+    description: '当前密码强度',
+    value: '强',
     actions: {
-      title: "修改"
+      title: '修改'
     }
   },
   {
-    title: "密保手机",
-    description: "已绑定手机",
-    value: "178****6855",
+    title: '密保手机',
+    description: '已绑定手机',
+    value: '178****6855',
     actions: {
-      title: "修改"
+      title: '修改'
     }
   },
   {
-    title: "密保问题",
-    description: "未设置密保问题，密保问题可有效保护账户安全",
-    value: "",
+    title: '密保问题',
+    description: '未设置密保问题，密保问题可有效保护账户安全',
+    value: '',
     actions: {
-      title: "设置"
+      title: '设置'
     }
   },
   {
-    title: "备用邮箱",
-    description: "已绑定邮箱",
-    value: "1808***436@qq.com",
+    title: '备用邮箱',
+    description: '已绑定邮箱',
+    value: '1808***436@qq.com',
     actions: {
-      title: "修改"
+      title: '修改'
     }
   },
   {
-    title: "MFA 设备",
-    description: "未绑定 MFA 设备，绑定后，可以进行二次确认",
-    value: "",
+    title: 'MFA 设备',
+    description: '未绑定 MFA 设备，绑定后，可以进行二次确认',
+    value: '',
     actions: {
-      title: "绑定"
+      title: '绑定'
     }
   }
 ];

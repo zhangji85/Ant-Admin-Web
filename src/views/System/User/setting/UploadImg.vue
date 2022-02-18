@@ -11,39 +11,37 @@
     <img v-if="imageUrl" :src="imageUrl" alt="avatar" class="img-style" />
     <div v-else>
       <a-icon :type="loading ? 'loading' : 'plus'" />
-      <div class="ant-upload-text">
-        Upload
-      </div>
+      <div class="ant-upload-text">Upload</div>
     </div>
   </a-upload>
 </template>
 <script>
 function getBase64(img, callback) {
   const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
+  reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
 }
 export default {
   data() {
     return {
       loading: false,
-      imageUrl: ""
+      imageUrl: ''
     };
   },
   methods: {
     handleChange(info) {
-      info.file.status = "uploading";
+      info.file.status = 'uploading';
       setTimeout(() => {
-        info.file.status = "done";
+        info.file.status = 'done';
       }, 2000);
 
-      if (info.file.status === "uploading") {
+      if (info.file.status === 'uploading') {
         this.loading = true;
         return;
       }
-      if (info.file.status === "done") {
+      if (info.file.status === 'done') {
         // Get this url from response in real world.
-        getBase64(info.file.originFileObj, imageUrl => {
+        getBase64(info.file.originFileObj, (imageUrl) => {
           this.imageUrl = imageUrl;
           this.loading = false;
         });
@@ -51,13 +49,13 @@ export default {
     },
     beforeUpload(file) {
       const isJpgOrPng =
-        file.type === "image/jpeg" || file.type === "image/png";
+        file.type === 'image/jpeg' || file.type === 'image/png';
       if (!isJpgOrPng) {
-        this.$message.error("You can only upload JPG file!");
+        this.$message.error('You can only upload JPG file!');
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error("Image must smaller than 2MB!");
+        this.$message.error('Image must smaller than 2MB!');
       }
       return isJpgOrPng && isLt2M;
     }
